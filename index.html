@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katlo - BGCSE 2026 ✨</title>
+    <!-- Tailwind CSS for utility styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Canvas Confetti Library for celebration effects -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #fff0f5;         /* Soft Lavender Blush */
+            --card-bg: #ffffff;          /* Pure White Cards */
+            --primary-pink: #ff69b4;     /* Vibrant Pink */
+            --dark-pink: #d81b60;        /* Deep Rose text/headers */
+            --light-pink: #ffdae9;       /* Soft Pink borders */
+            --text-dark: #4a2e35;        /* Soft Dark Brown text */
+            --accent-pink: #ff1493;       /* Deep Pink accent */
+        }
+
+         body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        /* Glassmorphism navigation bar */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid var(--light-pink);
+        }
+
+        /* Custom tab hover and active states */
+        .nav-tab {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--dark-pink);
+        }
+
+        .nav-tab:hover {
+            background-color: var(--light-pink);
+            transform: translateY(-1px);
+        }
+
+        .nav-tab.active {
+            background-color: var(--primary-pink);
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 105, 180, 0.35);
+        }
+
+        /* Custom soft card container styling */
+        .pink-card {
+            background-color: var(--card-bg);
+            border: 2px solid var(--light-pink);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px -5px rgba(255, 105, 180, 0.12), 0 8px 10px -6px rgba(255, 105, 180, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .pink-card:hover {
+            box-shadow: 0 15px 30px -5px rgba(255, 105, 180, 0.2);
+        }
+
+        /* Interactive buttons with soft depth */
+        .btn-pink {
+            background: linear-gradient(135deg, var(--primary-pink), var(--accent-pink));
+            color: white;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 14px rgba(255, 20, 147, 0.25);
+        }
+
+        .btn-pink:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(255, 20, 147, 0.35);
+        }
+
+        .btn-pink:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* Breathing Circle Animation */
+        @keyframes breathe {
+            0%, 100% {
+                transform: scale(0.85);
+                box-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+            }
+            50% {
+                transform: scale(1.25);
+                box-shadow: 0 0 40px rgba(255, 20, 147, 0.6);
+            }
+        }
+
+        .breathing-circle {
+            animation: breathe 8s ease-in-out infinite;
+        }
+
+         /* Smooth tab transition styling */
+        .tab-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Completed exam table row styling */
+        .exam-row.completed {
+            background-color: #fdf2f8 !important;
+            opacity: 0.65;
+        }
+        .exam-row.completed td {
+            text-decoration: line-through;
+            color: #9d174d;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+ <!-- Sticky Glass Navbar -->
+    <header class="sticky top-0 z-50 glass-nav px-4 py-3 shadow-sm">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl">💖</span>
+                <div class="flex flex-col">
+                    <span class="font-extrabold text-xl tracking-wide text-[#d81b60]">Katlo - BGCSE 2026</span>
+                    <span class="text-xs font-semibold text-[#ff69b4]">October - November 2026</span>
+                </div>
+            </div>
+            
+            <!-- Tab Navigation Buttons -->
+            <nav class="flex gap-1.5 bg-[#ffdae9]/50 p-1.5 rounded-full border border-[#ffdae9] text-xs sm:text-sm">
+                <button onclick="switchTab('home')" id="tab-home" class="nav-tab active px-3.5 py-2 rounded-full font-bold flex items-center gap-1.5">
+                    <i class="fa-solid fa-house"></i> Home
+                </button>
+                <button onclick="switchTab('timetable')" id="tab-timetable" class="nav-tab px-3.5 py-2 rounded-full font-bold flex items-center gap-1.5">
+                    <i class="fa-solid fa-calendar-days"></i> Timetable
+                </button>
+                <button onclick="switchTab('stress')" id="tab-stress" class="nav-tab px-3.5 py-2 rounded-full font-bold flex items-center gap-1.5">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Stress Relief
+                 </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-8 w-full flex-grow">
+
+        <!-- TAB 1: HOME -->
+        <section id="content-home" class="tab-content active space-y-8">
+            
+            <!-- Hero Encouragement Banner -->
+            <div class="pink-card p-8 text-center relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-[#ffdae9] rounded-full filter blur-xl opacity-60"></div>
+                <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-[#ff69b4] rounded-full filter blur-xl opacity-20"></div>
+
+                <span class="inline-block px-4 py-1 bg-[#ffdae9] text-[#d81b60] rounded-full text-xs font-bold uppercase tracking-widest mb-3">
+                    ✨ You got this, girl! Don't give up! ✨
+                </span>
+                <h1 class="text-3xl sm:text-5xl font-extrabold text-[#d81b60] mb-3 tracking-tight">
+                    Good Luck, Katlo! 💖
+                </h1>
+                <p class="text-lg font-bold text-[#ff1493] mb-6">
+                    BGCSE 2026 • Official Exam Companion
+                </p>
+
+                <!-- Heartfelt Note from Motheo Highlight -->
+                <div class="pink-card p-6 bg-gradient-to-br from-[#fff0f5] to-white text-left border-2 border-[#ff69b4] shadow-md relative my-6">
+                    <div class="flex items-center gap-2 text-[#d81b60] font-bold text-lg mb-3">
+                        <i class="fa-solid fa-envelope-open-text text-xl"></i>
+                        <span>A Special Message For Katlo</span>
+                    </div>
+                    <p class="text-sm sm:text-base text-[#4a2e35] leading-relaxed italic mb-4">
+                        "As you head into your exams, please remember that you are so much more capable than you give yourself credit for. All those hours of studying and all that heart you've put into this will pay off. Don't let doubt creep in or stress get the better of you. You are fully prepared for this moment. Give it your absolute best, stay calm, and know that no matter what, I am so proud of your hard work and strength. Sending you all my love, light, and the absolute best of luck! You've got this!"
+                    </p>
+                    <div class="text-right font-extrabold text-[#d81b60] text-sm">
+                        ✨ From Motheo ✨
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-4 pt-2">
+                    <button onclick="switchTab('timetable')" class="btn-pink px-6 py-3 rounded-full font-bold text-sm flex items-center gap-2">
+                        <span>View Your BGCSE Timetable (19 Papers)</span>
+                         <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <button onclick="switchTab('stress')" class="bg-white text-[#d81b60] border-2 border-[#ffdae9] hover:bg-[#fff0f5] px-6 py-3 rounded-full font-bold text-sm transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-heart"></i>
+                        <span>Stress Relief Corner</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Memory Photo Wall Container -->
+            <div class="pink-card p-6 sm:p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-[#d81b60] flex items-center gap-2">
+                            <i class="fa-solid fa-camera-retro"></i> Katlo's Confidence Wall
+                        </h2>
+                        <p class="text-sm text-[#d81b60]/80">Reminders of your radiance, strength, and brilliance!</p>
+                    </div>
+                </div>
+
+                 <!-- Interactive Image Grid with Placeholders -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div class="pink-card p-3 bg-[#fff0f5] flex flex-col items-center group hover:scale-105 transition-transform duration-300">
+                        <div class="w-full h-48 bg-[#ffdae9] rounded-xl overflow-hidden relative flex items-center justify-center border border-[#ff69b4]/30">
+                            <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80" alt="Katlo Studying" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/400x300/ffdae9/d81b60?text=Focused+Katlo!';">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                            <span class="absolute bottom-2 left-2 text-white text-xs font-bold bg-[#d81b60]/80 px-2 py-0.5 rounded-md">Smart & Focused</span>
+                        </div>
+                        <p class="mt-3 text-center text-sm font-semibold text-[#d81b60]">
+                            Ready to Ace BGCSE 🧠✨
+                        </p>
+                    </div>
+
+                      <div class="pink-card p-3 bg-[#fff0f5] flex flex-col items-center group hover:scale-105 transition-transform duration-300">
+                        <div class="w-full h-48 bg-[#ffdae9] rounded-xl overflow-hidden relative flex items-center justify-center border border-[#ff69b4]/30">
+                            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80" alt="Katlo Smiling" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/400x300/ffdae9/d81b60?text=Radiant+Smile!';">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                            <span class="absolute bottom-2 left-2 text-white text-xs font-bold bg-[#d81b60]/80 px-2 py-0.5 rounded-md">Pure Joy</span>
+                        </div>
+                        <p class="mt-3 text-center text-sm font-semibold text-[#d81b60]">
+                            Unstoppable Strength 💪💖
+                        </p>
+                    </div>
+
+                     <div class="pink-card p-3 bg-[#fff0f5] flex flex-col items-center group hover:scale-105 transition-transform duration-300">
+                        <div class="w-full h-48 bg-[#ffdae9] rounded-xl overflow-hidden relative flex items-center justify-center border border-[#ff69b4]/30">
+                            <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=600&q=80" alt="Victory" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/400x300/ffdae9/d81b60?text=Future+Champ!';">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                            <span class="absolute bottom-2 left-2 text-white text-xs font-bold bg-[#d81b60]/80 px-2 py-0.5 rounded-md">Future Champ</span>
+                        </div>
+                        <p class="mt-3 text-center text-sm font-semibold text-[#d81b60]">
+                            Victory Belongs To Katlo 🏆
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+           <!-- TAB 2: TIMETABLE -->
+        <section id="content-timetable" class="tab-content space-y-8">
+            
+            <!-- Schedule Header & Interactive Table -->
+            <div class="pink-card p-6 sm:p-8">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-[#d81b60] flex items-center gap-2">
+                            <i class="fa-solid fa-calendar-check"></i> Katlo's BGCSE 2026 Timetable
+                        </h2>
+                        <p class="text-sm text-[#d81b60]/80">Track your 19 exam papers from Oct 06 to Nov 16, 2026.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span id="exam-progress-badge" class="bg-[#ffdae9] text-[#d81b60] font-extrabold text-sm px-4 py-2 rounded-full border border-[#ff69b4]/40 shadow-sm">
+                            0 / 19 Done 🎉
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Search & Filter Bar -->
+                <div class="flex flex-col sm:flex-row gap-3 mb-6 bg-[#fff0f5] p-3 rounded-xl border border-[#ffdae9]">
+                    <div class="relative flex-grow">
+                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-[#ff69b4]"></i>
+                        <input type="text" id="timetable-search" onkeyup="filterTimetable()" placeholder="Search subject, paper, or date..." class="w-full pl-9 pr-4 py-2 rounded-lg text-sm border border-[#ffdae9] focus:outline-none focus:border-[#ff69b4]">
+                    </div>
+                    <select id="subject-filter" onchange="filterTimetable()" class="py-2 px-3 text-sm rounded-lg border border-[#ffdae9] bg-white text-[#d81b60] font-semibold focus:outline-none focus:border-[#ff69b4]">
+                        <option value="ALL">All Subjects</option>
+                        <option value="Geography">Geography</option>
+                        <option value="Religious Edu">Religious Edu</option>
+                        <option value="SDA">SDA</option>
+                        <option value="Maths">Maths</option>
+                        <option value="Social Studies">Social Studies</option>
+                        <option value="English">English</option>
+                        <option value="Setswana">Setswana</option>
+                    </select>
+                </div>
+
+                <!-- Responsive Table Wrapper -->
+                <div class="overflow-x-auto rounded-xl border border-[#ffdae9] shadow-sm">
+                    <table class="w-full text-left border-collapse bg-white" id="bgcse-table">
+                        <thead>
+                            <tr class="bg-[#ff69b4] text-white text-xs sm:text-sm">
+                                <th class="p-3 text-center w-10">Done</th>
+                                <th class="p-3">Day & Date</th>
+                                <th class="p-3">Subject</th>
+                                <th class="p-3 text-center">Paper</th>
+                                <th class="p-3 text-center">Time</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-[#ffdae9] text-xs sm:text-sm">
+                            
+                            <!-- 1. Geography PP3 -->
+                            <tr class="exam-row transition-colors hover:bg-[#fff0f5]/50" data-subject="Geography">
+                                <td class="p-3 text-center"><input type="checkbox" onchange="toggleExamRow(this)" class="w-4 h-4 accent-[#ff69b4] cursor-pointer"></td>
+                                <td class="p-3 font-semibold text-[#d81b60]">Tue, 06 Oct 26</td>
+                                <td class="p-3 font-bold text-[#4a2e35]">Geography</td>
+                                <td class="p-3 text-center"><span class="bg-[#ffdae9] text-[#d81b60] font-bold px-2 py-0.5 rounded-md">PP3</span></td>
+                                <td class="p-3 text-center"><span class="bg-[#ff69b4] text-white font-bold px-2.5 py-0.5 rounded-full">14:00</span></td>
+                            </tr>
+
+                            <!-- 2. Religious Edu PP2 -->
+                            <tr class="exam-row transition-colors hover:bg-[#fff0f5]/50" data-subject="Religious Edu">
+                                <td class="p-3 text-center"><input type="checkbox" onchange="toggleExamRow(this)" class="w-4 h-4 accent-[#ff69b4] cursor-pointer"></td>
+                                <td class="p-3 font-semibold text-[#d81b60]">Thu, 08 Oct 26</td>
+                                 <td class="p-3 font-bold text-[#4a2e35]">Religious Edu</td>
+                                <td class="p-3 text-center"><span class="bg-[#ffdae9] text-[#d81b60] font-bold px-2 py-0.5 rounded-md">PP2</span></td>
+                                <td class="p-3 text-center"><span class="bg-[#d81b60] text-white font-bold px-2.5 py-0.5 rounded-full">09:00</span></td>
+                            </tr>
+
+                            <!-- 3. SDA PP1 -->
+                            <tr class="exam-row transition-colors hover:bg-[#fff0f5]/50" data-subject="SDA">
+                                <td class="p-3 text-center"><input type="checkbox" onchange="toggleExamRow(this)" class="w-4 h-4 accent-[#ff69b4] cursor-pointer"></td>
+                                <td class="p-3 font-semibold text-[#d81b60]">Fri, 09 Oct 26</td>
+                                <td class="p-3 font-bold text-[#4a2e35]">SDA</td>
+                                <td class="p-3 text-center"><span class="bg-[#ffdae9] text-[#d81b60] font-bold px-2 py-0.5 rounded-md">PP1</span></td>
+                                <td class="p-3 text-center"><span class="bg-[#ff69b4] text-white font-bold px-2.5 py-0.5 rounded-full">14:00</span></td>
+                            </tr>
+
+                            <!-- 4. Maths PP1 -->
+                            <tr class="exam-row transition-colors hover:bg-[#fff0f5]/50" data-subject="Maths">
+                                <td class="p-3 text-center"><input type="checkbox" onchange="toggleExamRow(this)" class="w-4 h-4 accent-[#ff69b4] cursor-pointer"></td>
+                                <td class="p-3 font-semibold text-[#d81b60]">Tue, 13 Oct 26</td>
+                                <td class="p-3 font-bold text-[#4a2e35]">Maths</td>
+                                <td class="p-3 text-center"><span class="bg-[#ffdae9] text-[#d81b60] font-bold px-2 py-0.5 rounded-md">PP1</span></td>
+                                <td class="p-3 text-center"><span class="bg-[#d81b60] text-white font-bold px-2.5 py-0.5 rounded-full">09:00</span></td>
+                            </tr>
+
+                            <!-- 5. Social Studies PP1 -->
+                            <tr class="exam-row transition-colors hover:bg-[#fff0f5]/50" data-subject="Social Studies">
+                                <td class="p-3 text-center"><input type="checkbox" onchange="toggleExamRow(this)" class="w-4 h-4 accent-[#ff69b4] cursor-pointer"></td>
+                                <td class="p-3 font-semibold text-[#d81b60]">Tue, 13 Oct 26</td>
+                                <td class="p-3 font-bold text-[#4a2e35]">Social Studies</td>
+                                <td class="p-3 text-center"><span class="bg-[#ffdae9] text-[#d81b60] font-bold px-2 py-0.5 rounded-md">PP1</span></td>
+                                <td class="p-3 text-center"><span class="bg-[#ff69b4] text-white font-bold px-2.5 py-0.5 rounded-full">14:00</span></td>
+                            </tr>
+
+                            <!-- 6. English PP2 -->
+                            <tr class="exam-row transition-colors hover:bg-[#fff0f5]/50" data-subject="English">
+                                <td class="p-3 text-center"><input type="checkbox" onchange="toggleExamRow(this)" class="w-4 h-4 accent-[#ff69b4] cursor-pointer"></td>
+                                <td class="p-3 font-semibold text-[#d81b60]">Wed, 14 Oct 26</td>
+                                 <td class="p-3 font-bold text-[#4a2e35]">English</td>
+                                <td class="p-3 text-center"><span class="bg-[#ffdae9] text-[#d81b60] font-bold px-2 py-0.5 rounded-md">PP2</span></td>
+                                <td class="p-3 text-center"><span class="bg-[#d81b60] text-white font-bold px-2.5 py-0.5 rounded-full">09:00</span></td>
+                            </tr>
+
+                            <!-- 7. Geography PP2 -->
+                            <tr class="exam-row transition-colors hover:bg-[#fff0f5]/50" data-subject="Geography">
+                                <td class="p-3 text-center"><input type="checkbox" onchange="toggleExamRow(this)" class="w-4 h-4 accent-[#ff69b4] cursor-pointer"></td>
+                                <td class="p-3 font-semibold text-[#d81b60]">Thu, 15 Oct 26</td>
+                                <td class="p-3 font-bold text-[#4a2e35]">Geography</td>
+                                <td class="p-3 text-center"><span class="bg-[#ffdae9] text-[#d81b60] font-bold px-2 py-0.5 rounded-md">PP2</span></td>
+                                <td class="p-3 text-center"><span class="bg-[#d81b60] text-white font-bold px-2.5 py-0.5 rounded-full">09:00</span></td>
+                            </tr>
+
+                            <!-- 8. SDA PP4 -->
+                            <tr class="exam-row transition-colors hover:bg-[#fff0f5]/50" data-subject="SDA">
+                                <td class="p-3 text-center"><input type="checkbox" onchange="toggleExamRow(this)" class="w-4 h-4 accent-[#ff69b4] cursor-pointer"></td>
+                                <td class="p-3 font-semibold text-[#d81b60]">Thu, 15 Oct 26</td>
+                                <td class="p-3 font-bold text-[#4a2e35]">SDA</td>
+                                 <td class="p-3 text-center"><span class="bg-[#ffdae9] text-[#d81b60] font-bold px-2 py-0.5 rounded-md">PP4</span></td>
+                                <td class="p-3 text-center"><span class="bg-[#ff69b4] text-white font-bold px-2.5 py-0.5 rounded-full">14:00</span></td>
+                            </tr>
+
+                            <!-- 9. Setswana PP1 -->
+                            <tr class="exam-row transition-colors hover:bg-[#fff0f5]/50" data-subject="Setswana">
+                                <td class="p-3 text-center"><input type="checkbox" onchange="toggleExamRow(this)" class="w-4 h-4 accent-[#ff69b4] cursor-pointer"></td>
+                                <td class="p-3 font-semibold text-[#d81b60]">Fri, 16 Oct 26</td>
+                                <td class="p-3 font-bold text-[#4a2e35]">Setswana</td>
+                                <td class="p-3 text-center"><span class="bg-[#ffdae9] text-[#d81b60] font-bold px-2 py-0.5 rounded-md">PP1</span></td>
+                                <td class="p-3 text-center"><span class="bg-[#d81b60] text-white font-bold px-2.5 py-0.5 rounded-full">09:00</span></td>
+                            </tr>
+
+                            <!-- 10. English PP1 -->
+                            <tr class="exam-row transition-colors hover:bg-[#fff0f5]/50" data-subject="English">
+                                <td class="p-3 text-center"><input type="checkbox" onchange="toggleExamRow(this)" class="w-4 h-4 accent-[#ff69b4] cursor-pointer"></td>
+                                <td class="p-3 font-semibold text-[#d81b60]">Mon, 19 Oct 26</td>
+                                <td class="p-3 font-bold text-[#4a2e35]">English</td>
+                                 <td class="p-3 text-center"><span class="bg-[#ffdae9] text-[#d81b60] font-bold px-2 py-0.5 rounded-md">PP1</span></td>
+                                <td class="p-3 text-center"><span class="bg-[#ff69b4] text-white font-bold px-2.5 py-0.5 rounded-full">14:00</span></td>
+                            </tr>
+
+                            <!-- 11. Maths PP2 -->
+                            <tr class="exam-row transition-colors hover:bg-[#fff0f5]/50" data-subject="Maths">
+                                <td class="p-3 text-center"><input type="checkbox" onchange="toggleExamRow(this)" class="w-4 h-4 accent-[#ff69b4] cursor-pointer"></td>
+                                <td class="p-3 font-semibold text-[#d81b60]">Tue, 20 Oct 26</td>
+                                <td class="p-3 font-bold text-[#4a2e35]">Maths</td>
+                                <td class="p-3 text-center"><span class="bg-[#ffdae9] text-[#d81b60] font-bold px-2 py-0.5 rounded-md">PP2</span></td>
+                                <td class="p-3 text-center"><span class="bg-[#d81b60] text-white font-bold px-2.5 py-0.5 rounded-full">09:00</span></td>
+                            </tr>
+
+                            <!-- 12. Religious Edu PP1 -->
+                            <tr class="exam-row transition-colors hover:bg-[#fff0f5]/50" data-subject="Religious Edu">
+                                <td class="p-3 text-center"><input type="checkbox" onchange="toggleExamRow(this)" class="w-4 h-4 accent-[#ff69b4] cursor-pointer"></td>
+                                <td class="p-3 font-semibold text-[#d81b60]">Tue, 20 Oct 26</td>
+                                <td class="p-3 font-bold text-[#4a2e35]">Religious Edu</td>
+                                 <td class="p-3 text-center"><span class="bg-[#ffdae9] text-[#d81b60] font-bold px-2 py-0.5 rounded-md">PP1</span></td>
+                                <td class="p-3 text-center"><span class="bg-[#ff69b4] text-white font-bold px-2.5 py-0.5 rounded-full">14:00</span></td>
+                            </tr>
+
+                            <!-- 13. SDA PP3 -->
+                            <tr class="exam-row transition-colors hover:bg-[#fff0f5]/50" data-subject="SDA">
+                                <td class="p-3 text-center"><input type="checkbox" onchange="toggleExamRow(this)" class="w-4 h-4 accent-[#ff69b4] cursor-pointer"></td>
+                                <td class="p-3 font-semibold text-[#d81b60]">Thu, 22 Oct 26</td>
+                                <td class="p-3 font-bold text-[#4a2e35]">SDA</td>
+                                <td class="p-3 text-center"><span class="bg-[#ffdae9] text-[#d81b60] font-bold px-2 py-0.5 rounded-md">PP3</span></td>
+                                <td class="p-3 text-center"><span class="bg-[#ff69b4] text-white font-bold px-2.5 py-0.5 rounded-full">14:00</span></td>
+                            </tr>
+
+                            <!-- 14. Social Studies PP3 -->
+                            <tr class="exam-row transition-colors hover:bg-[#fff0f5]/50" data-subject="Social Studies">
+                                <td class="p-3 text-center"><input type="checkbox" onchange="toggleExamRow(this)" class="w-4 h-4 accent-[#ff69b4] cursor-pointer"></td>
+                                <td class="p-3 font-semibold text-[#d81b60]">Mon, 26 Oct 26</td>
+                                <td class="p-3 font-bold text-[#4a2e35]">Social Studies</td>
+                                <td class="p-3 text-center"><span class="bg-[#ffdae9] text-[#d81b60] font-bold px-2 py-0.5 rounded-md">PP3</span></td>
+                                <td class="p-3 text-center"><span class="bg-[#ff69b4] text-white font-bold px-2.5 py-0.5 rounded-full">14:00</span></td>
+                            </tr>
+
+                            <!-- 15. Setswana PP3 -->
+                            <tr class="exam-row transition-colors hover:bg-[#fff0f5]/50" data-subject="Setswana">
+                                <td class="p-3 text-center"><input type="checkbox" onchange="toggleExamRow(this)" class="w-4 h-4 accent-[#ff69b4] cursor-pointer"></td>
+                                <td class="p-3 font-semibold text-[#d81b60]">Wed, 28 Oct 26</td>
+                                <td class="p-3 font-bold text-[#4a2e35]">Setswana</td>
+                                <td class="p-3 text-center"><span class="bg-[#ffdae9] text-[#d81b60] font-bold px-2 py-0.5 rounded-md">PP3</span></td>
+                                <td class="p-3 text-center"><span class="bg-[#d81b60] text-white font-bold px-2.5 py-0.5 rounded-full">09:00</span></td>
+                            </tr>
+
+                            <!-- 16. Geography PP1 -->
+                            <tr class="exam-row transition-colors hover:bg-[#fff0f5]/50" data-subject="Geography">
+                                <td class="p-3 text-center"><input type="checkbox" onchange="toggleExamRow(this)" class="w-4 h-4 accent-[#ff69b4] cursor-pointer"></td>
+                                <td class="p-3 font-semibold text-[#d81b60]">Thu, 29 Oct 26</td>
+                                <td class="p-3 font-bold text-[#4a2e35]">Geography</td>
+                                                                <td class="p-3 text-center"><span class="bg-[#ffdae9] text-[#d81b60] font-bold px-2 py-0.5 rounded-md">PP1</span></td>
+                                <td class="p-3 text-center"><span class="bg-[#d81b60] text-white font-bold px-2.5 py-0.5 rounded-full">09:00</span></td>
+                            </tr>
+
+                            <!-- 17. Setswana PP2 -->
+                            <tr class="exam-row transition-colors hover:bg-[#fff0f5]/50" data-subject="Setswana">
+                                <td class="p-3 text-center"><input type="checkbox" onchange="toggleExamRow(this)" class="w-4 h-4 accent-[#ff69b4] cursor-pointer"></td>
+                                <td class="p-3 font-semibold text-[#d81b60]">Wed, 04 Nov 26</td>
+                                <td class="p-3 font-bold text-[#4a2e35]">Setswana</td>
+                                <td class="p-3 text-center"><span class="bg-[#ffdae9] text-[#d81b60] font-bold px-2 py-0.5 rounded-md">PP2</span></td>
+                                <td class="p-3 text-center"><span class="bg-[#ff69b4] text-white font-bold px-2.5 py-0.5 rounded-full">14:00</span></td>
+                            </tr>
+
+                            <!-- 18. Maths PP3 -->
+                            <tr class="exam-row transition-colors hover:bg-[#fff0f5]/50" data-subject="Maths">
+                                <td class="p-3 text-center"><input type="checkbox" onchange="toggleExamRow(this)" class="w-4 h-4 accent-[#ff69b4] cursor-pointer"></td>
+                                <td class="p-3 font-semibold text-[#d81b60]">Mon, 09 Nov 26</td>
+                                <td class="p-3 font-bold text-[#4a2e35]">Maths</td>
+                                <td class="p-3 text-center"><span class="bg-[#ffdae9] text-[#d81b60] 
+                                font-bold px-2 py-0.5 rounded-md">PP3</span></td>
+                                <td class="p-3 text-center"><span class="bg-[#d81b60] text-white font-bold px-2.5 py-0.5 rounded-full">09:00</span></td>
+                            </tr>
+
+                            <!-- 19. Social Studies PP2 -->
+                            <tr class="exam-row transition-colors hover:bg-[#fff0f5]/50" data-subject="Social Studies">
+                                <td class="p-3 text-center"><input type="checkbox" onchange="toggleExamRow(this)" class="w-4 h-4 accent-[#ff69b4] cursor-pointer"></td>
+                                <td class="p-3 font-semibold text-[#d81b60]">Mon, 16 Nov 26</td>
+                                <td class="p-3 font-bold text-[#4a2e35]">Social Studies</td>
+                                <td class="p-3 text-center"><span class="bg-[#ffdae9] text-[#d81b60] font-bold px-2 py-0.5 rounded-md">PP2</span></td>
+                                <td class="p-3 text-center"><span class="bg-[#d81b60] text-white font-bold px-2.5 py-0.5 rounded-full">09:00</span></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+             <!-- Exam Day Readiness Checklist -->
+            <div class="pink-card p-6 sm:p-8">
+                <h3 class="text-xl font-bold text-[#d81b60] mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-list-check"></i> Katlo's Daily Exam Bag Checklist
+                </h3>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                    <label class="flex items-center gap-3 p-3 bg-[#fff0f5] rounded-xl border border-[#ffdae9] cursor-pointer hover:bg-[#ffdae9]/50 transition-colors">
+                        <input type="checkbox" class="w-5 h-5 accent-[#ff69b4] rounded">
+                        <span class="font-medium text-[#4a2e35]">🆔 BGCSE Exam Slip & Student ID</span>
+                    </label>
+
+                    <label class="flex items-center gap-3 p-3 bg-[#fff0f5] rounded-xl border border-[#ffdae9] cursor-pointer hover:bg-[#ffdae9]/50 transition-colors">
+                        <input type="checkbox" class="w-5 h-5 accent-[#ff69b4] rounded">
+                        <span class="font-medium text-[#4a2e35]">✏️ Black/Blue Pens, Pencils & Eraser</span>
+                    </label>
+
+                    <label class="flex items-center gap-3 p-3 bg-[#fff0f5] rounded-xl border border-[#ffdae9] cursor-pointer hover:bg-[#ffdae9]/50 transition-colors">
+                        <input type="checkbox" class="w-5 h-5 accent-[#ff69b4] rounded">
+                        <span class="font-medium text-[#4a2e35]">📐 Ruler, Calculator (for Maths/Geo)</span>
+                    </label>
+
+                     <label class="flex items-center gap-3 p-3 bg-[#fff0f5] rounded-xl border border-[#ffdae9] cursor-pointer hover:bg-[#ffdae9]/50 transition-colors">
+                        <input type="checkbox" class="w-5 h-5 accent-[#ff69b4] rounded">
+                        <span class="font-medium text-[#4a2e35]">💧 Water Bottle & Quick Snack</span>
+                    </label>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- TAB 3: STRESS RELIEF -->
+        <section id="content-stress" class="tab-content space-y-8">
+            
+            <!-- Interactive Action Buttons -->
+            <div class="pink-card p-6 sm:p-8 text-center">
+                <h2 class="text-2xl font-bold text-[#d81b60] mb-2">⚡ Katlo's Comfort & Power Corner</h2>
+                <p class="text-sm text-[#4a2e35] mb-6">Whenever revision feels tough, tap a button below for instant calm or high energy!</p>
+
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button onclick="openModal('panic-modal')" class="btn-pink px-6 py-3.5 rounded-full font-bold text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-wind"></i>
+                        <span>Press if Overwhelmed</span>
+                    </button>
+
+                     <button onclick="openModal('hype-modal')" class="bg-gradient-to-r from-amber-400 to-[#ff69b4] text-white px-6 py-3.5 rounded-full font-bold text-sm shadow-md hover:scale-105 transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-fire"></i>
+                        <span>Press for Instant Hype</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Motheo's Full Note in Stress Relief -->
+            <div class="pink-card p-6 sm:p-8 bg-gradient-to-r from-white to-[#fff0f5] border-l-8 border-l-[#ff1493]">
+                <h3 class="text-xl font-bold text-[#d81b60] mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-heart text-[#ff1493]"></i> Heartfelt Words from Motheo
+                </h3>
+                <blockquote class="text-sm sm:text-base text-[#4a2e35] leading-relaxed italic border-l-2 border-[#ffdae9] pl-4 my-2">
+                    "As you head into your exams, please remember that you are so much more capable than you give yourself credit for. All those hours of studying and all that heart you've put into this will pay off. Don't let doubt creep in or stress get the better of you. You are fully prepared for this moment. Give it your absolute best, stay calm, and know that no matter what, I am so proud of your hard work and strength. Sending you all my love, light, and the absolute best of luck! You've got this!"
+                </blockquote>
+                <p class="text-right font-extrabold text-[#d81b60] text-sm mt-3">— Motheo 💖</p>
+            </div>
+
+            <!-- Lock In Button Banner -->
+            <div class="pink-card p-8 text-center bg-gradient-to-b from-white to-[#fff0f5]">
+                <h3 class="text-xl font-bold text-[#d81b60] mb-2">Ready to take on your BGCSEs, Katlo?</h3>
+                <p class="text-sm text-[#4a2e35] mb-6">Take a deep breath, trust in your hard work, and step into that exam room with confidence!</p>
+                
+                <button onclick="triggerLockIn()" class="btn-pink px-8 py-4 rounded-full font-extrabold text-base tracking-wide flex items-center justify-center gap-2 mx-auto">
+                    <i class="fa-solid fa-lock"></i>
+                    <span>LOCK IN & GO CRUSH BGCSE!</span>
+                </button>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- MODAL 1: Overwhelmed / Breathing Exercise -->
+    <div id="panic-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="pink-card max-w-md w-full p-6 text-center relative">
+            <button onclick="closeModal('panic-modal')" class="absolute top-4 right-4 text-[#d81b60] hover:text-[#ff1493] text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <span class="text-3xl mb-2 inline-block">🌸</span>
+            <h3 class="text-2xl font-bold text-[#d81b60] mb-2">Breathe With Me, Katlo</h3>
+            <p class="text-xs text-[#4a2e35] mb-6">Focus on the circle. Inhale peace as it expands, exhale doubt as it shrinks.</p>
+
+            <!-- Animated Breathing Circle -->
+            <div class="flex justify-center my-6">
+                <div class="breathing-circle w-28 h-28 bg-gradient-to-tr from-[#ff69b4] to-[#ffdae9] rounded-full flex items-center justify-center border-4 border-white shadow-lg">
+                    <span class="text-white font-bold text-sm">Breathe</span>
+                </div>
+            </div>
+
+            <p class="text-sm font-medium text-[#d81b60] mb-6 bg-[#fff0f5] p-3 rounded-xl border border-[#ffdae9]">
+                "Inhale calm... hold... exhale fear. You have studied for this, Katlo. You are ready."
+            </p>
+
+            <button onclick="closeModal('panic-modal')" class="btn-pink w-full py-2.5 rounded-full font-bold text-sm">
+                I Am Calm & Focused ✨
+            </button>
+        </div>
+    </div>
+
+     <!-- MODAL 2: Instant Hype Popup -->
+    <div id="hype-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="pink-card max-w-md w-full p-6 text-center relative">
+            <button onclick="closeModal('hype-modal')" class="absolute top-4 right-4 text-[#d81b60] hover:text-[#ff1493] text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <span class="text-4xl mb-2 inline-block">👑</span>
+            <h3 class="text-2xl font-extrabold text-[#d81b60] mb-2">KATLO's POWER BOOST!</h3>
+            
+            <div id="hype-quote-container" class="my-6 p-4 bg-[#fff0f5] rounded-xl border border-[#ffdae9]">
+                <p id="hype-quote-text" class="text-base font-bold text-[#4a2e35]">
+                    "Katlo, you are so much more capable than you give yourself credit for!" 🔥
+                </p>
+            </div>
+
+            <div class="flex gap-2">
+                <button onclick="nextHypeQuote()" class="bg-[#ffdae9] text-[#d81b60] hover:bg-[#ff69b4] hover:text-white transition-colors w-1/2 py-2.5 rounded-full font-bold text-xs">
+                    Get Another Boost ⚡
+                </button>
+                <button onclick="closeModal('hype-modal'); fireConfetti();" class="btn-pink w-1/2 py-2.5 rounded-full font-bold text-xs">
+                    I'm Ready! 🚀
+                </button>
+             </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 bg-white border-t border-[#ffdae9] text-xs font-semibold text-[#d81b60]">
+        Katlo - BGCSE 2026 • Dedicated with love from Motheo ✨
+    </footer>
+
+    <!-- JavaScript logic -->
+    <script>
+        const hypeQuotes = [
+            "\"Katlo, you are so much more capable than you give yourself credit for!\" 💖",
+            "\"All those hours of studying and heart you put into this WILL pay off!\" 🏆",
+            "\"Don't let doubt creep in or stress get the better of you!\" ✨",
+            "\"Give it your absolute best, stay calm, and know Motheo is so proud of you!\" 👑",
+            "\"You are fully prepared for this moment, Katlo. Go crush it!\" 🔥"
+        ];
+
+        let currentQuoteIndex = 0;
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+             document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            const selectedContent = document.getElementById(`content-${tabName}`);
+            const selectedTab = document.getElementById(`tab-${tabName}`);
+
+            if (selectedContent && selectedTab) {
+                selectedContent.classList.add('active');
+                selectedTab.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function toggleExamRow(checkbox) {
+            const row = checkbox.closest('.exam-row');
+            if (row) {
+                if (checkbox.checked) {
+                    row.classList.add('completed');
+                } else {
+                    row.classList.remove('completed');
+                }
+            }
+            updateExamProgress();
+        }
+
+        function updateExamProgress() {
+            const total = document.querySelectorAll('.exam-row').length;
+            const completed = document.querySelectorAll('.exam-row.completed').length;
+            const badge = document.getElementById('exam-progress-badge');
+
+            if (badge) {
+                badge.innerText = `${completed} / ${total} Done 🎉`;
+                if (completed === total && total > 0) {
+                    fireConfetti();
+                }
+            }
+        }
+
+        function filterTimetable() {
+            const searchValue = document.getElementById('timetable-search').value.toLowerCase();
+            const subjectValue = document.getElementById('subject-filter').value;
+            const rows = document.querySelectorAll('.exam-row');
+
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                const subject = row.getAttribute('data-subject');
+
+                const matchesSearch = text.includes(searchValue);
+                const matchesSubject = (subjectValue === 'ALL' || subject === subjectValue);
+
+                if (matchesSearch && matchesSubject) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                 }
+            });
+        }
+
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function nextHypeQuote() {
+            currentQuoteIndex = (currentQuoteIndex + 1) % hypeQuotes.length;
+            const quoteElem = document.getElementById('hype-quote-text');
+            if (quoteElem) {
+                quoteElem.innerText = hypeQuotes[currentQuoteIndex];
+            }
+        }
+
+        function fireConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 120,
+                    spread: 80,
+                    origin: { y: 0.6 },
+                    colors: ['#ff69b4', '#ff1493', '#ffdae9', '#ffffff', '#ffd700']
+                });
+            }
+        }
+
+        function triggerLockIn() {
+            fireConfetti();
+            setTimeout(() => {
+                alert("💖 LOCK IN MODE ACTIVATED! 💖\n\nKatlo, you are ready! Take a deep breath, give it your absolute best, and go conquer your BGCSE exams! - Motheo");
+            }, 300);
+        }
+    </script>
+</body>
+</html>
