@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Katlo - BGCSE 2026 Boost</title>
+    <title>Katlo - BGCSE 2026</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --bg-pink: #fff0f5;
+            --bg-pink: #fde8f0;
             --card-white: #ffffff;
-            --rose-primary: #d81b60;
-            --rose-light: #f8bbd0;
-            --rose-accent: #e91e63;
+            --rose-primary: #e91e63;
+            --rose-dark: #c2185b;
+            --rose-light: #fce4ec;
+            --rose-pill: #ff80ab;
             --text-dark: #333333;
         }
 
@@ -19,7 +20,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
         body {
@@ -32,61 +33,71 @@
 
         header {
             background-color: var(--card-white);
-            padding: 15px 5%;
+            padding: 15px 8%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
         .logo {
-            font-size: 1.3rem;
-            font-weight: bold;
+            font-size: 1.4rem;
+            font-weight: 800;
             color: var(--rose-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .logo span {
-            font-size: 0.85rem;
+        .logo-sub {
+            font-size: 0.8rem;
+            color: var(--rose-pill);
+            font-weight: 600;
             display: block;
-            color: var(--rose-accent);
-            font-weight: normal;
         }
 
         nav {
+            background-color: #fff0f5;
+            padding: 5px;
+            border-radius: 30px;
             display: flex;
-            gap: 10px;
+            gap: 5px;
         }
 
         .nav-btn {
             background: none;
             border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
+            padding: 8px 18px;
+            border-radius: 25px;
             font-size: 0.95rem;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            color: var(--text-dark);
+            color: var(--rose-primary);
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .nav-btn:hover, .nav-btn.active {
-            background-color: var(--rose-light);
-            color: var(--rose-primary);
+        .nav-btn.active {
+            background-color: #ff6090;
+            color: white;
+            box-shadow: 0 2px 8px rgba(255, 96, 144, 0.4);
         }
 
         main {
             flex: 1;
-            max-width: 900px;
-            width: 90%;
-            margin: 30px auto;
+            max-width: 850px;
+            width: 92%;
+            margin: 40px auto;
         }
 
         .tab-content {
             display: none;
-            animation: fadeIn 0.4s ease;
+            animation: fadeIn 0.3s ease-in-out;
         }
 
         .tab-content.active {
@@ -94,160 +105,228 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
+            from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .card {
+        .hero-card {
             background: var(--card-white);
-            padding: 25px;
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(216, 27, 96, 0.08);
-            margin-bottom: 25px;
+            padding: 40px 35px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(233, 30, 99, 0.08);
+            border: 1px solid rgba(233, 30, 99, 0.1);
+            text-align: center;
         }
 
-        h2 {
+        .pill-badge {
+            display: inline-block;
+            background-color: #ffe4ec;
             color: var(--rose-primary);
+            font-size: 0.8rem;
+            font-weight: 800;
+            padding: 6px 16px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
             margin-bottom: 15px;
         }
 
-        .note-box {
-            border-left: 4px solid var(--rose-primary);
-            background-color: #fff9fa;
-            padding: 18px;
-            border-radius: 0 12px 12px 0;
-            font-style: italic;
-            line-height: 1.6;
-            margin: 15px 0;
+        h1.hero-title {
+            color: var(--rose-primary);
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
-        .search-box {
-            width: 100%;
-            padding: 12px 18px;
-            border: 2px solid var(--rose-light);
-            border-radius: 25px;
-            margin-bottom: 20px;
+        .hero-subtitle {
+            color: var(--rose-primary);
+            font-weight: 700;
             font-size: 1rem;
-            outline: none;
+            margin-bottom: 30px;
         }
 
-        .search-box:focus {
+        .message-box {
+            border: 2px solid #ffccd5;
+            background-color: #fff9fa;
+            padding: 25px;
+            border-radius: 16px;
+            text-align: left;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .message-title {
+            color: var(--rose-primary);
+            font-weight: 800;
+            font-size: 1.05rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .message-body {
+            font-style: italic;
+            color: #4a4a4a;
+            line-height: 1.7;
+            font-size: 0.98rem;
+        }
+
+        .message-author {
+            text-align: right;
+            color: var(--rose-primary);
+            font-weight: 800;
+            font-size: 0.95rem;
+            margin-top: 15px;
+        }
+
+        .cta-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background-color: #ff4081;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background-color: #f50057;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--rose-primary);
+            border: 2px solid #ffccd5;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: #ffe4ec;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 20px;
+            border: 2px solid #ffccd5;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            outline: none;
+            margin-bottom: 20px;
+        }
+
+        .search-input:focus {
             border-color: var(--rose-primary);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        th, td {
-            padding: 12px;
             text-align: left;
-            border-bottom: 1px solid #f0f0f0;
         }
 
         th {
             background-color: var(--rose-primary);
             color: white;
-            font-weight: 600;
+            padding: 14px;
+            font-weight: 700;
+            border-radius: 6px 6px 0 0;
         }
 
-        tr:nth-child(even) {
-            background-color: #fffafc;
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #ffe4ec;
+            font-size: 0.95rem;
         }
 
         .time-badge {
-            background: var(--rose-light);
+            background-color: #ffe4ec;
             color: var(--rose-primary);
+            font-weight: 800;
             padding: 4px 10px;
             border-radius: 12px;
-            font-weight: bold;
             font-size: 0.85rem;
-        }
-
-        .action-btn {
-            background-color: var(--rose-primary);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s, background-color 0.2s;
-            display: inline-block;
-            margin: 10px 5px;
-        }
-
-        .action-btn:hover {
-            transform: scale(1.04);
-            background-color: var(--rose-accent);
-        }
-
-        .quote-box {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--rose-primary);
-            text-align: center;
-            padding: 20px;
-            background-color: #fff0f5;
-            border-radius: 12px;
-            margin-top: 15px;
         }
 
         footer {
             text-align: center;
             padding: 20px;
-            font-size: 0.9rem;
-            color: #777;
-            background-color: var(--card-white);
+            font-size: 0.85rem;
+            color: var(--rose-primary);
+            font-weight: 700;
             margin-top: auto;
         }
 
-        @media (max-width: 600px) {
-            header { flex-direction: column; gap: 10px; }
-            th, td { font-size: 0.85rem; padding: 8px 5px; }
+        @media (max-width: 650px) {
+            header { flex-direction: column; gap: 15px; }
+            h1.hero-title { font-size: 1.8rem; }
+            .cta-group { flex-direction: column; }
+            .btn-primary, .btn-secondary { width: 100%; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">
-            💖 Katlo - BGCSE 2026
-            <span>October - November 2026</span>
+        <div>
+            <div class="logo">💖 Katlo - BGCSE 2026</div>
+            <span class="logo-sub">October - November 2026</span>
         </div>
         <nav>
-            <button type="button" class="nav-btn active" onclick="showTab('home')">🏠 Home</button>
-            <button type="button" class="nav-btn" onclick="showTab('timetable')">📅 Timetable</button>
-            <button type="button" class="nav-btn" onclick="showTab('stress')">⚡ Stress Relief</button>
+            <button type="button" class="nav-btn active" id="btn-home" onclick="switchTab('home')">🏠 Home</button>
+            <button type="button" class="nav-btn" id="btn-timetable" onclick="switchTab('timetable')">📅 Timetable</button>
+            <button type="button" class="nav-btn" id="btn-stress" onclick="switchTab('stress')">✨ Stress Relief</button>
         </nav>
     </header>
 
     <main>
-        <!-- HOME TAB -->
+        <!-- HOME PAGE -->
         <section id="home" class="tab-content active">
-            <div class="card">
-                <h2>You got this, girl! Don't give up! ✨</h2>
-                <div class="note-box">
-                    "As you head into your exams, please remember that you are so much more capable than you give yourself credit for. All those hours of studying and all that heart you've put into this will pay off. Don't let doubt creep in or stress get the better of you. You are fully prepared for this moment. Give it your absolute best, stay calm, and know that no matter what, I am so proud of your hard work and strength. Sending you all my love, light, and the absolute best of luck! You've got this!"
-                    <br><br><strong>— From Motheo</strong>
-                </div>
-            </div>
+            <div class="hero-card">
+                <div class="pill-badge">✨ YOU GOT THIS, GIRL! DON'T GIVE UP! ✨</div>
+                <h1 class="hero-title">Good Luck, Katlo! 💖</h1>
+                <p class="hero-subtitle">BGCSE 2026 • Official Exam Companion</p>
 
-            <div class="card" style="text-align: center;">
-                <h2>Ready to Lock In? 🎉</h2>
-                <p>Click below whenever you need a quick boost of energy!</p>
-                <button class="action-btn" onclick="triggerConfetti()">🎉 Lock In & Celebrate!</button>
+                <div class="message-box">
+                    <div class="message-title">📩 A Special Message For Katlo</div>
+                    <p class="message-body">
+                        "As you head into your exams, please remember that you are so much more capable than you give yourself credit for. All those hours of studying and all that heart you've put into this will pay off. Don't let doubt creep in or stress get the better of you. You are fully prepared for this moment. Give it your absolute best, stay calm, and know that no matter what, I am so proud of your hard work and strength. Sending you all my love, light, and the absolute best of luck! You've got this!"
+                    </p>
+                    <div class="message-author">✨ From Motheo ✨</div>
+                </div>
+
+                <div class="cta-group">
+                    <button class="btn-primary" onclick="switchTab('timetable')">View Your BGCSE Timetable (19 Papers) ➔</button>
+                    <button class="btn-secondary" onclick="switchTab('stress')">💖 Stress Relief Corner</button>
+                </div>
             </div>
         </section>
 
-        <!-- TIMETABLE TAB -->
+        <!-- TIMETABLE PAGE -->
         <section id="timetable" class="tab-content">
-            <div class="card">
-                <h2>📅 Katlo's Official BGCSE 2026 Timetable</h2>
-                <input type="text" id="searchInput" class="search-box" onkeyup="filterTable()" placeholder="🔍 Search subject (e.g. Maths, Geography, English)...">
+            <div class="hero-card" style="text-align: left;">
+                <h2 style="color: var(--rose-primary); margin-bottom: 15px;">📅 BGCSE 2026 Exam Timetable</h2>
+                <input type="text" id="searchInput" class="search-input" onkeyup="filterTable()" placeholder="🔍 Search subject (e.g. Maths, Geography, Setswana)...">
                 
                 <div style="overflow-x: auto;">
                     <table id="examTable">
@@ -286,19 +365,15 @@
             </div>
         </section>
 
-        <!-- STRESS RELIEF TAB -->
+        <!-- STRESS RELIEF PAGE -->
         <section id="stress" class="tab-content">
-            <div class="card" style="text-align: center;">
-                <h2>⚡ Daily Hype & Stress Relief</h2>
-                <p>Take a deep breath and grab your quote of the day!</p>
-                
-                <button class="action-btn" onclick="newQuote()">✨ Get Motivation</button>
-                <div id="quoteDisplay" class="quote-box">"You are capable of achieving amazing things!"</div>
-            </div>
-
-            <div class="card" style="text-align: center;">
-                <h2>🧘 4-7-8 Quick Reset</h2>
-                <p>Breathe in for 4 seconds, hold for 7 seconds, exhale for 8 seconds. You're completely in control!</p>
+            <div class="hero-card">
+                <div class="pill-badge">✨ DAILY HYPE & MOTIVATION ✨</div>
+                <h2 style="color: var(--rose-primary); margin-bottom: 15px;">Take A Deep Breath! 💖</h2>
+                <div id="quoteDisplay" style="font-size: 1.2rem; font-weight: 700; color: var(--rose-primary); margin: 25px 0; background: #fff0f5; padding: 20px; border-radius: 16px;">
+                    "You are capable of achieving amazing things!"
+                </div>
+                <button class="btn-primary" onclick="newQuote()">✨ Get New Hype Quote</button>
             </div>
         </section>
     </main>
@@ -308,35 +383,30 @@
     </footer>
 
     <script>
-        function showTab(tabId) {
-            // Hide all tab contents
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(content => content.classList.remove('active'));
+        function switchTab(tabId) {
+            // Hide all tab content sections
+            document.querySelectorAll('.tab-content').forEach(section => {
+                section.classList.remove('active');
+            });
 
             // Deactivate all nav buttons
-            const buttons = document.querySelectorAll('.nav-btn');
-            buttons.forEach(button => button.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
 
-            // Show selected tab
-            const targetContent = document.getElementById(tabId);
-            if(targetContent) {
-                targetContent.classList.add('active');
-            }
-
-            // Highlight corresponding button
-            const activeIndex = ['home', 'timetable', 'stress'].indexOf(tabId);
-            if(activeIndex !== -1 && buttons[activeIndex]) {
-                buttons[activeIndex].classList.add('active');
-            }
+            // Activate selected tab and button
+            document.getElementById(tabId).classList.add('active');
+            document.getElementById('btn-' + tabId).classList.add('active');
+            window.scrollTo(0, 0);
         }
 
         function filterTable() {
             const input = document.getElementById('searchInput').value.toUpperCase();
-            const tr = document.getElementById('examTable').getElementsByTagName('tr');
+            const trs = document.getElementById('examTable').getElementsByTagName('tr');
             
-            for (let i = 1; i < tr.length; i++) {
-                const text = tr[i].textContent || tr[i].innerText;
-                tr[i].style.display = text.toUpperCase().indexOf(input) > -1 ? '' : 'none';
+            for (let i = 1; i < trs.length; i++) {
+                const text = trs[i].textContent || trs[i].innerText;
+                trs[i].style.display = text.toUpperCase().indexOf(input) > -1 ? '' : 'none';
             }
         }
 
@@ -351,16 +421,8 @@
         function newQuote() {
             const random = Math.floor(Math.random() * quotes.length);
             document.getElementById('quoteDisplay').innerText = `"${quotes[random]}"`;
-            triggerConfetti();
-        }
-
-        function triggerConfetti() {
             if (typeof confetti === 'function') {
-                confetti({
-                    particleCount: 80,
-                    spread: 60,
-                    origin: { y: 0.6 }
-                });
+                confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
             }
         }
     </script>
