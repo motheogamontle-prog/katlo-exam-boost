@@ -135,17 +135,12 @@
             </div>
             
             <!-- Tab Navigation Buttons -->
-            <nav class="flex gap-1.5 bg-[#ffdae9]/50 p-1.5 rounded-full border border-[#ffdae9] text-xs sm:text-sm">
-                <button onclick="switchTab('home')" id="tab-home" class="nav-tab active px-3.5 py-2 rounded-full font-bold flex items-center gap-1.5">
-                    <i class="fa-solid fa-house"></i> Home
-                </button>
-                <button onclick="switchTab('timetable')" id="tab-timetable" class="nav-tab px-3.5 py-2 rounded-full font-bold flex items-center gap-1.5">
-                    <i class="fa-solid fa-calendar-days"></i> Timetable
-                </button>
-                <button onclick="switchTab('stress')" id="tab-stress" class="nav-tab px-3.5 py-2 rounded-full font-bold flex items-center gap-1.5">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> Stress Relief
-                 </button>
-            </nav>
+           <!-- TO THIS: -->
+<nav>
+    <a href="javascript:void(0)" onclick="switchTab('home')" id="nav-home" class="nav-link active">🏠 Home</a>
+    <a href="javascript:void(0)" onclick="switchTab('timetable')" id="nav-timetable" class="nav-link">📅 Timetable</a>
+    <a href="javascript:void(0)" onclick="switchTab('stress')" id="nav-stress" class="nav-link">⚡ Stress Relief</a>
+</nav>
         </div>
     </header>
 
